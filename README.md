@@ -1,6 +1,6 @@
 # mod-auth-oidc-client
 
-Example Apache app using the mod_auth_openidc provider.  This is intended as an example to get started and is not intended for production use.
+Example Apache app using the [mod_auth_openidc](https://github.com/OpenIDC/mod_auth_openidc) provider.  This is intended as an example to get started and is not intended for production use.
 
 ## Configuration
 
