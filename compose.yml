@@ -1,0 +1,33 @@
+# docker-compose.yml
+# Defines the services for our Apache with mod_auth_oidc application.
+
+version: '3.8'
+
+services:
+  # Apache web server service
+  apache:
+    # Build the image from the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Assign a consistent container name
+    container_name: apache-oidc-app
+    # Map ports from the container to the host
+    # 80:80 maps container's port 80 to host's port 80 (HTTP)
+    # 443:443 maps container's port 443 to host's port 443 (HTTPS)
+    ports:
+      - "80:80"
+      - "443:443"
+    # Mount volumes to persist data and inject configuration
+    volumes:
+      # Mount the public_html directory to Apache's document root
+      - ./public_html:/usr/local/apache2/htdocs/
+      # Mount the apache configuration directory to Apache's conf directory
+      # This allows us to easily modify Apache's configuration from the host
+      - ./apache/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./apache/sites-enabled/:/usr/local/apache2/conf/sites-enabled/
+      # Mount the SSL certificates
+      - ./apache/ssl/selfsigned.crt:/usr/local/apache2/conf/ssl/selfsigned.crt
+      - ./apache/ssl/selfsigned.key:/usr/local/apache2/conf/ssl/selfsigned.key
+    # Restart the container if it exits unexpectedly
+    restart: always
